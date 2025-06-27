@@ -49,13 +49,24 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 1. Clone the repository using the following link:  
    https://github.com/MicahSamuel77/XTernHackathonRecipeApp
 
-2. Configure your OpenAI API key at the TOP of `main.py`:
-   
-   ```python
-   client = OpenAI(
-       api_key="API_KEY_HERE"
-   )
-   ```
+2. Set your OpenAI API key as an environment variable **before running the app** (replace your actual key below):
+
+   - **On Linux or macOS (bash/zsh):**
+     ```sh
+     export OPENAI_API_KEY=your_openai_api_key_here
+     ```
+
+   - **On Windows (Command Prompt):**
+     ```cmd
+     set OPENAI_API_KEY=your_openai_api_key_here
+     ```
+
+   - **On Windows (PowerShell):**
+     ```powershell
+     $env:OPENAI_API_KEY="your_openai_api_key_here"
+     ```
+
+   *You can run this command in your VS Code terminal or any shell before starting the application. This step is required for the app to access the OpenAI API.*
 
 3. Run the app using Python and access it through your web browser.
 
