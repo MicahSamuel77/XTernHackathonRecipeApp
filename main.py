@@ -9,7 +9,7 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Initialize OpenAI client
 client = OpenAI(
-    api_key=""
+    api_key=""  # Your API key here
 )
 
 @app.route('/measurement.html')
@@ -20,7 +20,6 @@ def measurement():
 def temperature():
     return render_template('temperature.html')
 
-
 @app.route('/')
 @app.route('/index.html')
 def index():
@@ -28,31 +27,38 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'images' not in request.files:
-        return jsonify({"error": "No images uploaded"}), 400
-
-    images = request.files.getlist('images')
-    if not images:
-        return jsonify({"error": "No images found"}), 400
-
-
+    # Check if user typed manual ingredients
+    manual_ingredients = request.form.get('manual_ingredients', '').strip()
     all_ingredients = []
 
-    for image in images:
-        if image.filename == '':
-            continue
-        filename = secure_filename(image.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        image.save(filepath)
+    if manual_ingredients:
+        # Use typed ingredients
+        ingredients_list = [i.strip().lower() for i in manual_ingredients.split(',') if i.strip()]
+        all_ingredients.extend(ingredients_list)
+    else:
+        # Process images only if no manual ingredients provided
+        if 'images' not in request.files:
+            return jsonify({"error": "No images uploaded and no manual ingredients provided"}), 400
 
-        ingredients = detect_ingredients(filepath)
-        all_ingredients.extend(ingredients)
+        images = request.files.getlist('images')
+        if not images or all(image.filename == '' for image in images):
+            return jsonify({"error": "No images found and no manual ingredients provided"}), 400
+
+        for image in images:
+            if image.filename == '':
+                continue
+            filename = secure_filename(image.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+            image.save(filepath)
+
+            ingredients = detect_ingredients(filepath)
+            all_ingredients.extend(ingredients)
 
     unique_ingredients = list(dict.fromkeys(all_ingredients))[:5]
 
     if len(unique_ingredients) == 0:
-        return jsonify({"error": "No ingredients detected. Try different images or type them."}), 200
+        return jsonify({"error": "No ingredients detected or provided. Try typing or uploading different images."}), 200
 
     recipe = generate_recipe(unique_ingredients)
 

@@ -15,19 +15,24 @@
         <nav>
             <h3>Menu</h3>
             <ul>
-                <li><a href="index.html">Find Recipes from Ingredients</a></li>
+                <li><a href="index.html" class="active">Find Recipes from Ingredients</a></li>
                 <li><a href="measurement.html">Measurement Conversions</a></li>
                 <li><a href="temperature.html">Cooking Temperatures</a></li>
             </ul>
         </nav>
 
         <main>
-            <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients.</p>
+            <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients or type your ingredients below.</p>
             <p><strong>Step 2:</strong> Press "Generate Recipe" and we'll help you cook!</p>
 
             <form id="upload-form" enctype="multipart/form-data">
-                <input type="file" name="images" accept="image/*" multiple required />
+                <input type="file" name="images" accept="image/*" multiple />
                 <br />
+
+                <label for="manual_ingredients">Or type ingredients here (comma separated):</label><br />
+                <textarea id="manual_ingredients" name="manual_ingredients" rows="3" placeholder="e.g., chicken, tomatoes, garlic"></textarea>
+                <br />
+
                 <button type="submit">Generate Recipe</button>
             </form>
 
@@ -81,28 +86,42 @@
         }
 
         window.onload = () => {
-            speak("Welcome to Hoosier Helper. Please upload food photos to get your easy recipe.");
+            speak("Welcome to Hoosier Helper. Please upload food photos or type ingredients to get your easy recipe.");
             updateControlsVisibility(false);
         };
 
         document.querySelector('input[name="images"]').addEventListener("change", function (event) {
             previewDiv.innerHTML = "";
             const files = Array.from(event.target.files);
-            speak(`You selected ${files.length} image${files.length > 1 ? "s" : ""}.`);
-            files.forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    previewDiv.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
+            if (files.length > 0) {
+                speak(`You selected ${files.length} image${files.length > 1 ? "s" : ""}.`);
+                files.forEach((file) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        previewDiv.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
         });
 
         document.getElementById("upload-form").onsubmit = async (e) => {
             e.preventDefault();
+
             const formData = new FormData(e.target);
+
+            // Check if user provided either images or manual ingredients
+            const images = formData.getAll('images').filter(f => f.size > 0);
+            const manualIngredients = formData.get('manual_ingredients').trim();
+
+            if (images.length === 0 && manualIngredients === "") {
+                output.innerHTML = `<p class="error">⚠️ Please upload images or type ingredients before submitting.</p>`;
+                speak("Please upload images or type ingredients before submitting.");
+                return;
+            }
+
             output.textContent = "⏳ Analyzing your ingredients and writing a recipe... please wait.";
             speak("Analyzing your ingredients. Please wait.");
             updateControlsVisibility(false);
@@ -121,27 +140,23 @@
                     speak("Sorry, we could not detect any ingredients. Please try again.");
                     updateControlsVisibility(false);
                 } else {
-                    // Format recipe for display with line breaks
-                    const formattedRecipe = data.recipe.replace(/\n/g, "<br>");
+                    // Format output nicely with preserved line breaks inside <pre>
+                    const formattedOutput = 
+`📝 Ingredients Detected:
+${data.ingredients.join(", ")}
 
-                    output.innerHTML = `
-                        <h2>📝 Ingredients Detected:</h2>
-                        <p>${data.ingredients.join(", ")}</p>
-                        <h2>👩‍🍳 Your Simple Recipe:</h2>
-                        <pre id="recipe-text">${formattedRecipe}</pre>
-                    `;
+👩‍🍳 Your Simple Recipe:
+${data.recipe}`;
 
-                    // Split recipe text into steps for speech
+                    output.innerHTML = `<pre>${formattedOutput}</pre>`;
+
                     steps = data.recipe
                         .split(/\n+/)
-                        .map((s) => s.trim())
-                        .filter((s) => s.length > 0);
+                        .map(s => s.trim())
+                        .filter(s => s.length > 0);
 
                     currentStepIndex = 0;
-
-                    // Speak first step
                     speak(steps[currentStepIndex]);
-
                     updateControlsVisibility(true);
                 }
             } catch (err) {

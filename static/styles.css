@@ -117,14 +117,18 @@ button:hover {
     background-color: #245423;
 }
 
-#output {
-    margin-top: 30px;
-    background: #f8f8f8;
-    padding: 20px;
-    border-radius: 12px;
-    border: 2px solid #ccc;
-    font-size: 1.5em;
-    white-space: pre-wrap; /* keeps line breaks */
+#output pre {
+    font-size: 1.3em;      /* bigger text */
+    white-space: pre-wrap; /* wrap long lines */
+    word-wrap: break-word; /* break long words */
+    max-height: 400px;     /* max height, scroll if too long */
+    overflow-y: auto;      /* vertical scroll */
+    padding: 15px;         /* some padding */
+    background-color: #fff; /* lighter background */
+    border-radius: 8px;
+    border: 1.5px solid #2e6d2c;
+    font-family: 'Courier New', Courier, monospace; /* easier to read */
+    line-height: 1.5em;    /* spacing between lines */
 }
 
 .preview {
