@@ -8,7 +8,7 @@
     <script src="/static/scripts/conversions.js" defer></script>
 </head>
 <body>
-    <div>
+    <div class="grid-container">
         <header>
             <h1>👵 HoosierHelper – Your Kitchen Friend</h1>
             <h2>Find Recipes from Ingredients</h2>
@@ -17,7 +17,7 @@
         <nav>
             <h3>Menu</h3>
             <ul>
-                <li><a href="index.html">Recipe Finder</a></li>
+                <li><a href="index.html">Find Recipes from Ingredients</a></li>
                 <li><a href="measurement.html">Measurement Conversions</a></li>
                 <li><a href="temperature.html">Cooking Temperatures</a></li>
             </ul>
@@ -25,7 +25,7 @@
 
         <main>
             <h3>Measurements</h3>
-            <form>
+            <form class="conversionform" id="measurementform">
                 <div>
                     <label for="milliliters">Milliliters</label>
                     <input type="number" id="milliliters" onblur="updateFromMl()" />
@@ -61,7 +61,7 @@
             </form>
 
             <h3>Temperatures</h3>
-            <form>
+            <form class="conversionform" id="temperatureform">
                 <div>
                     <label for="fahrenheit">Fahrenheit</label>
                     <input type="number" id="fahrenheit" onblur="updateFromF()" />
