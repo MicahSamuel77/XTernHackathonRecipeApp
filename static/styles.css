@@ -47,27 +47,14 @@ main {
 
 .grid-container {
     display: grid;
-    grid-template-areas: 'header header'
-    'nav main';
-    grid-template-columns: 1fr 3fr;
     grid-gap: 1em;
     padding: 1em;
-    max-width: 1440px;
 }
 
 .conversionform {
     display: grid;
     gap: 1rem;
     margin: 0 auto;
-}
-
-#measurementform {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-#temperatureform {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
 }
 
 .conversionform > div {
@@ -93,7 +80,7 @@ input[type="number"] {
 }
 
 input[type="file"] {
-    font-size: 1.5em;
+    font-size: 1.1em;
     padding: 10px;
     margin: 10px 0 20px 0;
 }
@@ -227,29 +214,26 @@ tbody tr:hover td {
   transition: background 0.2s;
 }
 
-.veg-checkbox-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 25px;
+@media (min-width: 800px) {
+    .grid-container {
+        grid-template-areas: 'header header'
+        'nav main';
+        grid-template-columns: 1fr 3fr;
+        max-width: 1440px;
+    }
+
+    #measurementform {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    
+    #temperatureform {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
 }
-.veg-checkbox-row label {
-    font-size: 1.4em;
-    font-weight: 600;
-    background: #eaf4e8;
-    padding: 12px 30px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 1px 10px rgba(85, 120, 65, 0.07);
-    border: 2px solid #d4e2d4;
-    gap: 14px;
-}
-.veg-checkbox-row input[type="checkbox"] {
-    width: 28px;
-    height: 28px;
-    accent-color: #4caf50;
-    margin-right: 10px;
-    cursor: pointer;
+
+@media (max-width: 800px) {
+    .grid-container {
+        grid-template-areas: 'nav' 'header' 'main';
+    }
 }
