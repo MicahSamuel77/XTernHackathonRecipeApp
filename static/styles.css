@@ -7,62 +7,92 @@ body {
     padding: 2em;
     line-height: 1.6;
 }
+
 h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     text-align: center;
     color: #2e6d2c;
 }
-label,
-p,
-h2,
-button {
-    font-size: 1.3em;
-}
-input[type="file"] {
-    font-size: 1.2em;
-    padding: 10px;
-    margin: 10px 0;
-}
-button {
+
+h2, h3, label, p, button {
     font-size: 1.5em;
-    padding: 10px 20px;
+}
+
+nav {
+    background: #e4f1d1;
+    padding: 1em;
+    border-radius: 12px;
+    margin-bottom: 2em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+nav ul li {
+    margin: 0.6em 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #2e6d2c;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+input[type="file"] {
+    font-size: 1.5em;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+}
+
+button {
+    font-size: 1.7em;
+    padding: 12px 25px;
     background-color: #2e6d2c;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    margin: 5px;
+    margin: 0 10px 20px 0;
 }
+
 button:hover {
     background-color: #245423;
 }
+
 #output {
     margin-top: 30px;
     background: #f8f8f8;
     padding: 20px;
     border-radius: 12px;
     border: 2px solid #ccc;
+    font-size: 1.5em;
+    white-space: pre-wrap; /* keeps line breaks */
 }
-#read-aloud-btn,
-#prev-btn,
-#next-btn,
-#pause-btn,
-#resume-btn {
-    display: none;
-}
-#controls {
-    margin-top: 15px;
-    text-align: center;
-}
+
 .preview {
     margin-top: 20px;
 }
+
 .preview img {
-    max-width: 200px;
+    max-width: 180px;
     margin: 10px;
     border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
 }
+
+#controls {
+    margin-top: 10px;
+    text-align: center;
+}
+
 .error {
     color: red;
     font-weight: bold;
+    font-size: 1.6em;
 }

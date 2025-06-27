@@ -12,7 +12,17 @@ client = OpenAI(
     api_key=""
 )
 
+@app.route('/measurement.html')
+def measurement():
+    return render_template('measurement.html')
+
+@app.route('/temperature.html')
+def temperature():
+    return render_template('temperature.html')
+
+
 @app.route('/')
+@app.route('/index.html')
 def index():
     return render_template('index.html')
 
@@ -24,6 +34,7 @@ def upload():
     images = request.files.getlist('images')
     if not images:
         return jsonify({"error": "No images found"}), 400
+
 
     all_ingredients = []
 
