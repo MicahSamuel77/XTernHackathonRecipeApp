@@ -150,6 +150,7 @@ For support, feature requests, or bug reports:
 ## Acknowledgments
 
 - OpenAI for providing the Vision and GPT APIs
+- FoodSafety.gov for the cooking temperature information
 - E-Gineering and Xtern communities for hosting this event
 
 ---
