@@ -8,9 +8,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Initialize OpenAI client
-client = OpenAI(
-    api_key=""  # Your API key here
-)
+client = OpenAI()
 
 @app.route('/measurement.html')
 def measurement():
