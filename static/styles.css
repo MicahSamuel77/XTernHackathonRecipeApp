@@ -1,7 +1,7 @@
 body {
+    color: #275430;
     font-family: Arial, sans-serif;
     background-color: #fffef5;
-    color: #333;
     margin: auto;
     padding: 2em;
     line-height: 1.6;
@@ -10,21 +10,17 @@ body {
 h1 {
     font-size: 3em;
     text-align: center;
-    color: #2e6d2c;
 }
 
 h1 {
     font-size: 2.5em;
     text-align: center;
-    color: #2e6d2c;
 }
 h2 {
     font-size: 2em;
     text-align: center;
-    color: #2e6d2c;
 }
-p,
-button {
+p {
     font-size: 1.3em;
 }
 
@@ -43,7 +39,7 @@ main {
 
 main {
 	grid-area: main;
-	background-color: white;
+	background-color: #FFFFFF;
 	padding: 2em;
 	border-radius: 8px;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -76,7 +72,7 @@ main {
 
 .conversionform > div {
     padding: 1em;
-    background: #f5f5f5;
+    background: #F5F4EC;
     border-radius: 6px;
     text-align: center;
 }
@@ -105,16 +101,18 @@ input[type="file"] {
 button {
     font-size: 1.7em;
     padding: 12px 25px;
-    background-color: #2e6d2c;
-    color: white;
+    background-color: #52945C;
+    color: #FFFDF3;
     border: none;
-    border-radius: 12px;
+    border-radius: 6px;
     cursor: pointer;
     margin: 0 10px 20px 0;
+	transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+	box-shadow: 0 2px 8px 0 rgba(0, 68, 204, 0.04);
 }
 
-button:hover {
-    background-color: #245423;
+button:hover, button:focus {
+    background-color: #275430;
 }
 
 #output pre {
@@ -124,9 +122,9 @@ button:hover {
     max-height: 400px;     /* max height, scroll if too long */
     overflow-y: auto;      /* vertical scroll */
     padding: 15px;         /* some padding */
-    background-color: #fff; /* lighter background */
+    background-color: #ffffff; /* lighter background */
     border-radius: 8px;
-    border: 1.5px solid #2e6d2c;
+    border: 1.5px solid #52945C;
     font-family: 'Courier New', Courier, monospace; /* easier to read */
     line-height: 1.5em;    /* spacing between lines */
 }
@@ -171,10 +169,10 @@ nav a {
     font-size: 1.3em;
 	display: inline-block;
 	padding: 0.5em 1.2em;
-	border: 2px solid #0044cc;
-	border-radius: 4px;
-	background-color: #f0f6ff;
-	color: #0044cc;
+	border: 2px solid #52945C;
+	border-radius: 6px;
+	background-color: #52945C;
+	color: #FFFDF3;
 	font-weight: bold;
 	text-decoration: none;
 	transition: background 0.2s, color 0.2s, box-shadow 0.2s;
@@ -183,23 +181,16 @@ nav a {
 }
 
 nav a:hover, nav a:focus {
-	background-color: #e6eeff;
-	color: #001955;
+	background-color: #275430;
+    border-color: #275430;
 	text-decoration: none;
 	box-shadow: 0 4px 16px 0 rgba(0, 68, 204, 0.1);
-}
-
-nav .active {
-	color: #fff;
-	background-color: #0044cc;
-	border-color: #0044cc;
-	text-decoration: none;
 }
 
 nav {
     justify-content: center;
 	grid-area: nav;
-	background-color: white;
+	background-color: #fff;
 	padding: 1em;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
@@ -210,7 +201,7 @@ table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  background: #f5f5f5;
+  background: #F4F4F2;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -219,12 +210,11 @@ th, td {
   font-size: 1.3em;
   padding: 1em;
   text-align: center;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #E2E1DC;
 }
 
 th {
-  background: #ededed;
-  color: #222;
+  background: #EFEFEB;
   font-weight: 600;
 }
 
@@ -233,6 +223,33 @@ tr:last-child td {
 }
 
 tbody tr:hover td {
-  background: #ececec;
+  background: #EFEFEB;
   transition: background 0.2s;
+}
+
+.veg-checkbox-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.veg-checkbox-row label {
+    font-size: 1.4em;
+    font-weight: 600;
+    background: #eaf4e8;
+    padding: 12px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 10px rgba(85, 120, 65, 0.07);
+    border: 2px solid #d4e2d4;
+    gap: 14px;
+}
+.veg-checkbox-row input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+    accent-color: #4caf50;
+    margin-right: 10px;
+    cursor: pointer;
 }
