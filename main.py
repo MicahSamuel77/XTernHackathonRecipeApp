@@ -18,39 +18,47 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image uploaded"}), 400
+    if 'images' not in request.files:
+        return jsonify({"error": "No images uploaded"}), 400
 
-    image = request.files['image']
-    filename = secure_filename(image.filename)
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    image.save(filepath)
+    images = request.files.getlist('images')
+    if not images:
+        return jsonify({"error": "No images found"}), 400
 
-    ingredients = detect_ingredients(filepath)
+    all_ingredients = []
 
-    # Fallback if no ingredients detected
-    if len(ingredients) == 0:
-        return jsonify({"error": "No ingredients detected. Please try a different image or type your ingredients."}), 200
+    for image in images:
+        if image.filename == '':
+            continue
+        filename = secure_filename(image.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        image.save(filepath)
 
-    recipe = generate_recipe(ingredients)
+        ingredients = detect_ingredients(filepath)
+        all_ingredients.extend(ingredients)
 
-    return jsonify({"ingredients": ingredients, "recipe": recipe})
+    unique_ingredients = list(dict.fromkeys(all_ingredients))[:5]
+
+    if len(unique_ingredients) == 0:
+        return jsonify({"error": "No ingredients detected. Try different images or type them."}), 200
+
+    recipe = generate_recipe(unique_ingredients)
+
+    return jsonify({"ingredients": unique_ingredients, "recipe": recipe})
 
 def detect_ingredients(image_path):
-    # Encode image as base64 (for OpenAI vision API)
     with open(image_path, "rb") as f:
         b64_image = base64.b64encode(f.read()).decode("utf-8")
     data_url = f"data:image/jpeg;base64,{b64_image}"
 
-    # Compose a prompt to extract food ingredients from the image only
     vision_prompt = (
         "List the main food ingredients you can see in this photo. "
         "Only provide a comma-separated list of common food ingredient names, nothing else."
     )
 
     response = client.chat.completions.create(
-        model="gpt-4o",  # Or "gpt-4-vision-preview"
+        model="gpt-4o",
         messages=[
             {
                 "role": "user",
@@ -62,10 +70,9 @@ def detect_ingredients(image_path):
         ],
         max_tokens=100,
     )
+
     ingredient_text = response.choices[0].message.content.strip()
-    # Parse comma-separated list
     ingredients = [i.strip().lower() for i in ingredient_text.split(",") if i.strip()]
-    # Deduplicate and limit to 5
     return list(dict.fromkeys(ingredients))[:5]
 
 def generate_recipe(ingredients):
