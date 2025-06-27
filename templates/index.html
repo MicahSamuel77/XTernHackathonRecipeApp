@@ -1,39 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>HoosierHelper</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fffef5;
+            color: #333;
+            max-width: 800px;
+            margin: auto;
+            padding: 2em;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            color: #2e6d2c;
+        }
+
+        label, p, h2, button {
+            font-size: 1.3em;
+        }
+
+        input[type="file"] {
+            font-size: 1.2em;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: #2e6d2c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #245423;
+        }
+
+        #output {
+            margin-top: 30px;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #ccc;
+        }
+
+        .preview {
+            margin-top: 20px;
+        }
+
+        .preview img {
+            max-width: 200px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>👵 HoosierHelper - Your Kitchen Friend</h1>
+    <h1>👵 HoosierHelper – Your Kitchen Friend</h1>
+
+    <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients from your phone or computer.</p>
+    <p><strong>Step 2:</strong> Press "Generate Recipe" and we'll do the rest!</p>
+
     <form id="upload-form" enctype="multipart/form-data">
         <input type="file" name="images" accept="image/*" multiple required>
+        <br>
         <button type="submit">Generate Recipe</button>
     </form>
+
+    <div class="preview" id="preview"></div>
     <div id="output"></div>
 
     <script>
+    const previewDiv = document.getElementById('preview');
+    const output = document.getElementById('output');
+
+    // Show image previews
+    document.querySelector('input[name="images"]').addEventListener('change', function(event) {
+        previewDiv.innerHTML = '';
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                previewDiv.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+
     document.getElementById('upload-form').onsubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const res = await fetch('/upload', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await res.json();
+        output.innerHTML = "⏳ Analyzing your ingredients and writing a recipe... please wait.";
 
-        const output = document.getElementById('output');
-        output.innerHTML = '';
+        try {
+            const res = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
 
-        if (data.error) {
-            output.innerHTML = `<p style="color:red;">${data.error}</p>`;
-        } else {
-            output.innerHTML = `
-                <h2>Ingredients Detected:</h2>
-                <p>${data.ingredients.join(', ')}</p>
-                <h2>Recipe:</h2>
-                <pre>${data.recipe}</pre>
-            `;
+            const data = await res.json();
+            output.innerHTML = '';
+
+            if (data.error) {
+                output.innerHTML = `<p class="error">⚠️ ${data.error}</p>`;
+            } else {
+                output.innerHTML = `
+                    <h2>📝 Ingredients Detected:</h2>
+                    <p>${data.ingredients.join(', ')}</p>
+                    <h2>👩‍🍳 Your Simple Recipe:</h2>
+                    <pre>${data.recipe}</pre>
+                `;
+            }
+        } catch (err) {
+            output.innerHTML = `<p class="error">Something went wrong. Please try again.</p>`;
         }
     };
     </script>
