@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="../scripts/conversions.js"></script>
+<head>
+    <link rel="stylesheet" href="../static/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measurement Conversions</title>
+</head>
+<body>
+    <div>
+        <header>
+            <h1>👵 HoosierHelper – Your Kitchen Friend</h1>
+            <h2>Find Recipes from Ingredients</h2>
+        </header>
+
+        <nav>
+            <h3>Menu</h3>
+            <ul>
+                <li><a href="index.html">Recipe Finder</a></li>
+                <li><a href="measurement.html">Measurement Conversions</a></li>
+                <li><a href="temperature.html">Cooking Temperatures</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <h3>Measurements</h3>
+            <form>
+                <div>
+                    <label for="milliliters">Milliliters</label>
+                    <input type="number" id="milliliters" onblur="updateFromMl()" />
+                </div>
+                <div>
+                    <label for="teaspoons">Teaspoons</label>
+                    <input type="number" id="teaspoons" onblur="updateFromTsp()" />
+                </div>
+                <div>
+                    <label for="tablespoons">Tablespoons</label>
+                    <input type="number" id="tablespoons" onblur="updateFromTbsp()" />
+                </div>
+                <div>
+                    <label for="fluidoz">Fluid Ounces</label>
+                    <input type="number" id="fluidoz" onblur="updateFromFlOz()" />
+                </div>
+                <div>
+                    <label for="cups">Cups</label>
+                    <input type="number" id="cups" onblur="updateFromCups()" />
+                </div>
+                <div>
+                    <label for="pints">Pints</label>
+                    <input type="number" id="pints" onblur="updateFromPints()" />
+                </div>
+                <div>
+                    <label for="quarts">Quarts</label>
+                    <input type="number" id="quarts" onblur="updateFromQuarts()" />
+                </div>
+                <div>
+                    <label for="gallons">Gallons</label>
+                    <input type="number" id="gallons" onblur="updateFromGallons()" />
+                </div>
+            </form>
+
+            <h3>Temperatures</h3>
+            <form>
+                <div>
+                    <label for="fahrenheit">Fahrenheit</label>
+                    <input type="number" id="fahrenheit" onblur="updateFromF()" />
+                </div>
+                <div>
+                    <label for="celsius">Celsius</label>
+                    <input type="number" id="celsius" onblur="updateFromC()" />
+                </div>
+            </form>
+        </main>
+
+        <footer>
+
+        </footer>
+    </div>
+</body>
+</html>

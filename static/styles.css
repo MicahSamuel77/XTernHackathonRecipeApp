@@ -1,31 +1,68 @@
 body {
     font-family: Arial, sans-serif;
-    font-size: 18px;
-    background: #fff8e1;
-    color: #000;
-    text-align: center;
-    padding: 20px;
-}
-
-h1 {
-    font-size: 28px;
-    color: #4e342e;
-}
-
-button {
-    font-size: 20px;
-    padding: 10px 20px;
-    background-color: #8bc34a;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-pre {
-    background: #f1f8e9;
-    padding: 10px;
-    border-radius: 6px;
-    text-align: left;
-    max-width: 600px;
+    background-color: #fffef5;
+    color: #333;
+    max-width: 800px;
     margin: auto;
+    padding: 2em;
+    line-height: 1.6;
+}
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    color: #2e6d2c;
+}
+label,
+p,
+h2,
+button {
+    font-size: 1.3em;
+}
+input[type="file"] {
+    font-size: 1.2em;
+    padding: 10px;
+    margin: 10px 0;
+}
+button {
+    font-size: 1.5em;
+    padding: 10px 20px;
+    background-color: #2e6d2c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 5px;
+}
+button:hover {
+    background-color: #245423;
+}
+#output {
+    margin-top: 30px;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+}
+#read-aloud-btn,
+#prev-btn,
+#next-btn,
+#pause-btn,
+#resume-btn {
+    display: none;
+}
+#controls {
+    margin-top: 15px;
+    text-align: center;
+}
+.preview {
+    margin-top: 20px;
+}
+.preview img {
+    max-width: 200px;
+    margin: 10px;
+    border-radius: 8px;
+}
+.error {
+    color: red;
+    font-weight: bold;
 }

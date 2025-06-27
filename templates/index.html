@@ -2,266 +2,201 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>HoosierHelper</title>
-    <link rel="stylesheet" href="/static/styles.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fffef5;
-            color: #333;
-            max-width: 800px;
-            margin: auto;
-            padding: 2em;
-            line-height: 1.6;
-        }
-
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            color: #2e6d2c;
-        }
-
-        label,
-        p,
-        h2,
-        button {
-            font-size: 1.3em;
-        }
-
-        input[type="file"] {
-            font-size: 1.2em;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        button {
-            font-size: 1.5em;
-            padding: 10px 20px;
-            background-color: #2e6d2c;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        button:hover {
-            background-color: #245423;
-        }
-
-        #output {
-            margin-top: 30px;
-            background: #f8f8f8;
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid #ccc;
-        }
-
-        #read-aloud-btn,
-        #prev-btn,
-        #next-btn,
-        #pause-btn,
-        #resume-btn {
-            display: none;
-        }
-
-        #controls {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .preview {
-            margin-top: 20px;
-        }
-
-        .preview img {
-            max-width: 200px;
-            margin: 10px;
-            border-radius: 8px;
-        }
-
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    <title>Hoosier Helper</title>
+    <link rel="stylesheet" href="../static/styles.css" />
 </head>
 <body>
-    <h1>👵 HoosierHelper – Your Kitchen Friend</h1>
+    <div>
+        <header>
+            <h1>👵 HoosierHelper – Your Kitchen Friend</h1>
+            <h2>Find Recipes from Ingredients</h2>
+        </header>
 
-    <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients.</p>
-    <p><strong>Step 2:</strong> Press "Generate Recipe" and we'll help you cook!</p>
+        <nav>
+            <h3>Menu</h3>
+            <ul>
+                <li><a href="index.html">Find Recipes from Ingredients</a></li>
+                <li><a href="measurement.html">Measurement Conversions</a></li>
+                <li><a href="temperature.html">Cooking Temperatures</a></li>
+            </ul>
+        </nav>
 
-    <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" name="images" accept="image/*" multiple required />
-        <br />
-        <button type="submit">Generate Recipe</button>
-    </form>
+        <main>
+            <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients.</p>
+            <p><strong>Step 2:</strong> Press "Generate Recipe" and we'll help you cook!</p>
 
-    <div class="preview" id="preview"></div>
-    <div id="output"></div>
+            <form id="upload-form" enctype="multipart/form-data">
+                <input type="file" name="images" accept="image/*" multiple required />
+                <br />
+                <button type="submit">Generate Recipe</button>
+            </form>
 
-    <div id="controls">
-        <button id="prev-btn">⬅️ Previous Step</button>
-        <button id="pause-btn">⏸ Pause</button>
-        <button id="resume-btn">▶️ Resume</button>
-        <button id="next-btn">Next Step ➡️</button>
-    </div>
+            <div class="preview" id="preview"></div>
+            <div id="output"></div>
 
-    <script>
-        const previewDiv = document.getElementById("preview");
-        const output = document.getElementById("output");
+            <div id="controls">
+                <button id="prev-btn">⬅️ Previous Step</button>
+                <button id="pause-btn">⏸ Pause</button>
+                <button id="resume-btn">▶️ Resume</button>
+                <button id="next-btn">Next Step ➡️</button>
+            </div>
 
-        const prevBtn = document.getElementById("prev-btn");
-        const nextBtn = document.getElementById("next-btn");
-        const pauseBtn = document.getElementById("pause-btn");
-        const resumeBtn = document.getElementById("resume-btn");
+            <script>
+                const previewDiv = document.getElementById("preview");
+                const output = document.getElementById("output");
 
-        // Text-to-speech setup
-        let steps = [];
-        let currentStepIndex = 0;
-        let utterance = null;
+                const prevBtn = document.getElementById("prev-btn");
+                const nextBtn = document.getElementById("next-btn");
+                const pauseBtn = document.getElementById("pause-btn");
+                const resumeBtn = document.getElementById("resume-btn");
 
-        function speak(text) {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-            }
-            utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = "en-US";
-            utterance.rate = 0.9;
+                // Text-to-speech setup
+                let steps = [];
+                let currentStepIndex = 0;
+                let utterance = null;
 
-            utterance.onend = () => {
-                // Optional: auto advance if you want
-                // currentStepIndex++;
-                // if (currentStepIndex < steps.length) {
-                //   speak(steps[currentStepIndex]);
-                // }
-            };
+                function speak(text) {
+                    if (window.speechSynthesis.speaking) {
+                        window.speechSynthesis.cancel();
+                    }
+                    utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = "en-US";
+                    utterance.rate = 0.9;
 
-            window.speechSynthesis.speak(utterance);
-        }
-
-        function updateControlsVisibility(show) {
-            if (show) {
-                prevBtn.style.display = "inline-block";
-                nextBtn.style.display = "inline-block";
-                pauseBtn.style.display = "inline-block";
-                resumeBtn.style.display = "inline-block";
-            } else {
-                prevBtn.style.display = "none";
-                nextBtn.style.display = "none";
-                pauseBtn.style.display = "none";
-                resumeBtn.style.display = "none";
-            }
-        }
-
-        // Welcome message
-        window.onload = () => {
-            speak(
-                "Welcome to Hoosier Helper. Please upload food photos to get your easy recipe."
-            );
-            updateControlsVisibility(false);
-        };
-
-        // Image previews and speak confirmation
-        document
-            .querySelector('input[name="images"]')
-            .addEventListener("change", function (event) {
-                previewDiv.innerHTML = "";
-                const files = Array.from(event.target.files);
-                speak(`You selected ${files.length} image${files.length > 1 ? "s" : ""}.`);
-
-                files.forEach((file) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = document.createElement("img");
-                        img.src = e.target.result;
-                        previewDiv.appendChild(img);
+                    utterance.onend = () => {
+                        // Optional: auto advance if you want
+                        // currentStepIndex++;
+                        // if (currentStepIndex < steps.length) {
+                        //   speak(steps[currentStepIndex]);
+                        // }
                     };
-                    reader.readAsDataURL(file);
-                });
-            });
 
-        document.getElementById("upload-form").onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            output.innerHTML =
-                "⏳ Analyzing your ingredients and writing a recipe... please wait.";
-            speak("Analyzing your ingredients. Please wait.");
-            updateControlsVisibility(false);
-
-            try {
-                const res = await fetch("/upload", {
-                    method: "POST",
-                    body: formData,
-                });
-
-                const data = await res.json();
-                output.innerHTML = "";
-
-                if (data.error) {
-                    output.innerHTML = `<p class="error">⚠️ ${data.error}</p>`;
-                    speak("Sorry, we could not detect any ingredients. Please try again.");
-                    updateControlsVisibility(false);
-                } else {
-                    // Display ingredients and recipe
-                    output.innerHTML = `
-                        <h2>📝 Ingredients Detected:</h2>
-                        <p>${data.ingredients.join(", ")}</p>
-                        <h2>👩‍🍳 Your Simple Recipe:</h2>
-                        <pre id="recipe-text">${data.recipe}</pre>
-                    `;
-
-                    // Split recipe into steps by new line or period+space
-                    // You can customize this split logic based on your recipe format
-                    steps = data.recipe
-                        .split(/\n+/)
-                        .map((s) => s.trim())
-                        .filter((s) => s.length > 0);
-
-                    // Reset current step
-                    currentStepIndex = 0;
-
-                    // Read first step aloud
-                    speak(steps[currentStepIndex]);
-
-                    // Show controls
-                    updateControlsVisibility(true);
+                    window.speechSynthesis.speak(utterance);
                 }
-            } catch (err) {
-                output.innerHTML = `<p class="error">Something went wrong. Please try again.</p>`;
-                speak("Something went wrong. Please try again.");
-                updateControlsVisibility(false);
-            }
-        };
 
-        // Controls events
+                function updateControlsVisibility(show) {
+                    if (show) {
+                        prevBtn.style.display = "inline-block";
+                        nextBtn.style.display = "inline-block";
+                        pauseBtn.style.display = "inline-block";
+                        resumeBtn.style.display = "inline-block";
+                    } else {
+                        prevBtn.style.display = "none";
+                        nextBtn.style.display = "none";
+                        pauseBtn.style.display = "none";
+                        resumeBtn.style.display = "none";
+                    }
+                }
 
-        prevBtn.onclick = () => {
-            if (currentStepIndex > 0) {
-                currentStepIndex--;
-                speak(steps[currentStepIndex]);
-            }
-        };
+                // Welcome message
+                window.onload = () => {
+                    speak(
+                        "Welcome to Hoosier Helper. Please upload food photos to get your easy recipe."
+                    );
+                    updateControlsVisibility(false);
+                };
 
-        nextBtn.onclick = () => {
-            if (currentStepIndex < steps.length - 1) {
-                currentStepIndex++;
-                speak(steps[currentStepIndex]);
-            }
-        };
+                // Image previews and speak confirmation
+                document
+                    .querySelector('input[name="images"]')
+                    .addEventListener("change", function (event) {
+                        previewDiv.innerHTML = "";
+                        const files = Array.from(event.target.files);
+                        speak(`You selected ${files.length} image${files.length > 1 ? "s" : ""}.`);
 
-        pauseBtn.onclick = () => {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.pause();
-            }
-        };
+                        files.forEach((file) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                const img = document.createElement("img");
+                                img.src = e.target.result;
+                                previewDiv.appendChild(img);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    });
 
-        resumeBtn.onclick = () => {
-            if (window.speechSynthesis.paused) {
-                window.speechSynthesis.resume();
-            }
-        };
-    </script>
+                document.getElementById("upload-form").onsubmit = async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    output.innerHTML =
+                        "⏳ Analyzing your ingredients and writing a recipe... please wait.";
+                    speak("Analyzing your ingredients. Please wait.");
+                    updateControlsVisibility(false);
+
+                    try {
+                        const res = await fetch("/upload", {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        const data = await res.json();
+                        output.innerHTML = "";
+
+                        if (data.error) {
+                            output.innerHTML = `<p class="error">⚠️ ${data.error}</p>`;
+                            speak("Sorry, we could not detect any ingredients. Please try again.");
+                            updateControlsVisibility(false);
+                        } else {
+                            // Display ingredients and recipe
+                            output.innerHTML = `
+                                <h2>📝 Ingredients Detected:</h2>
+                                <p>${data.ingredients.join(", ")}</p>
+                                <h2>👩‍🍳 Your Simple Recipe:</h2>
+                                <pre id="recipe-text">${data.recipe}</pre>
+                            `;
+
+                            // Split recipe into steps by new line or period+space
+                            // You can customize this split logic based on your recipe format
+                            steps = data.recipe
+                                .split(/\n+/)
+                                .map((s) => s.trim())
+                                .filter((s) => s.length > 0);
+
+                            // Reset current step
+                            currentStepIndex = 0;
+
+                            // Read first step aloud
+                            speak(steps[currentStepIndex]);
+
+                            // Show controls
+                            updateControlsVisibility(true);
+                        }
+                    } catch (err) {
+                        output.innerHTML = `<p class="error">Something went wrong. Please try again.</p>`;
+                        speak("Something went wrong. Please try again.");
+                        updateControlsVisibility(false);
+                    }
+                };
+
+                // Controls events
+
+                prevBtn.onclick = () => {
+                    if (currentStepIndex > 0) {
+                        currentStepIndex--;
+                        speak(steps[currentStepIndex]);
+                    }
+                };
+
+                nextBtn.onclick = () => {
+                    if (currentStepIndex < steps.length - 1) {
+                        currentStepIndex++;
+                        speak(steps[currentStepIndex]);
+                    }
+                };
+
+                pauseBtn.onclick = () => {
+                    if (window.speechSynthesis.speaking) {
+                        window.speechSynthesis.pause();
+                    }
+                };
+
+                resumeBtn.onclick = () => {
+                    if (window.speechSynthesis.paused) {
+                        window.speechSynthesis.resume();
+                    }
+                };
+            </script>
+            </main>
+        </div>
 </body>
 </html>
