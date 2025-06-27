@@ -26,7 +26,7 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 
 ## Technology Stack
 
-- **Frontend**: HTML5, CSS3
+- **Frontend**: HTML5, CSS3, JavaScript
 - **Backend**: Python
 - **AI Integration**: OpenAI Vision API
 - **Recipe Generation**: OpenAI GPT API
@@ -49,14 +49,15 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 1. Clone the repository using the following link:  
    https://github.com/MicahSamuel77/XTernHackathonRecipeApp
 
-2. Configure your OpenAI API key in main.py
-'''python
-client = OpenAI(
-    api_key="API_KEY_HERE"
-)
-'''
+2. Configure your OpenAI API key at the TOP of `main.py`:
+   
+   ```python
+   client = OpenAI(
+       api_key="API_KEY_HERE"
+   )
+   ```
 
-4. Run the app using Python and access it through your web browser.
+3. Run the app using Python and access it through your web browser.
 
 ---
 
@@ -99,13 +100,6 @@ We welcome contributions to HoosierHelper! Please follow these steps:
 4. Push to your branch
 5. Submit a pull request
 
-### Code Style
-
-- Use consistent indentation (spaces or tabs)
-- Follow Python best practices (PEP 8)
-- Comment complex logic
-- Ensure responsive design compatibility
-
 ### Testing
 
 - Test image upload functionality
@@ -138,7 +132,6 @@ We welcome contributions to HoosierHelper! Please follow these steps:
 
 For support, feature requests, or bug reports:
 
-- Email: support@hoosierhelper.com
 - Issues: [GitHub Issues](https://github.com/MicahSamuel77/XTernHackathonRecipeApp/issues)
 
 ---
@@ -146,7 +139,6 @@ For support, feature requests, or bug reports:
 ## Acknowledgments
 
 - OpenAI for providing the Vision and GPT APIs
-- Contributors and beta testers
 - E-Gineering and Xtern communities for hosting this event
 
 ---
