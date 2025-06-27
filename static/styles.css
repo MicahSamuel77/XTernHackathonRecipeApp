@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    background: #fff8e1;
+    color: #000;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #4e342e;
+}
+
+button {
+    font-size: 20px;
+    padding: 10px 20px;
+    background-color: #8bc34a;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+pre {
+    background: #f1f8e9;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: left;
+    max-width: 600px;
+    margin: auto;
+}
