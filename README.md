@@ -18,7 +18,9 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 
 ## Features
 
-<!-- Features will be added here -->
+- Smart Ingredient Recognition
+- Well thought out recipes
+- Audible instructions for those who struggle with reading text
 
 ---
 
@@ -145,7 +147,7 @@ For support, feature requests, or bug reports:
 
 - OpenAI for providing the Vision and GPT APIs
 - Contributors and beta testers
-- Indiana University community for inspiration
+- E-Gineering and Xtern communities for hosting this event
 
 ---
 
