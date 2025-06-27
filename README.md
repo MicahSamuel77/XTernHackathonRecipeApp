@@ -20,7 +20,10 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 
 - Smart Ingredient Recognition
 - Well thought out recipes
+- Responsive design for viewing on computer, tablet, or phone
 - Audible instructions for those who struggle with reading text
+- Clear measurement/temperature conversions
+- Safe meat temperature information
 
 ---
 
@@ -80,6 +83,7 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 2. **AI Recognition**: The system uses OpenAI's Vision model to identify ingredients.
 3. **Recipe Generation**: The AI agent generates recipe ideas based on ingredients.
 4. **Browse Results**: View personalized recipe suggestions.
+5. **Reference Information**: Check measurement conversions and safe food temperatures while cooking.
 
 ### Supported Image Formats
 
