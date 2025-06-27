@@ -25,14 +25,16 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    # Check if user typed manual ingredients
     manual_ingredients = request.form.get('manual_ingredients', '').strip()
-    vegetarian = request.form.get('vegetarian', default=None) == 'on'  # Will be 'on' if checkbox is checked
     all_ingredients = []
 
     if manual_ingredients:
+        # Use typed ingredients
         ingredients_list = [i.strip().lower() for i in manual_ingredients.split(',') if i.strip()]
         all_ingredients.extend(ingredients_list)
     else:
+        # Process images only if no manual ingredients provided
         if 'images' not in request.files:
             return jsonify({"error": "No images uploaded and no manual ingredients provided"}), 400
 
@@ -56,7 +58,7 @@ def upload():
     if len(unique_ingredients) == 0:
         return jsonify({"error": "No ingredients detected or provided. Try typing or uploading different images."}), 200
 
-    recipe = generate_recipe(unique_ingredients, vegetarian=(vegetarian == 'on'))
+    recipe = generate_recipe(unique_ingredients)
 
     return jsonify({"ingredients": unique_ingredients, "recipe": recipe})
 
@@ -88,20 +90,16 @@ def detect_ingredients(image_path):
     ingredients = [i.strip().lower() for i in ingredient_text.split(",") if i.strip()]
     return list(dict.fromkeys(ingredients))[:5]
 
-def generate_recipe(ingredients, vegetarian=False):
+def generate_recipe(ingredients):
     prompt = (
         f"Create an Indiana-style, elderly-friendly recipe using the following ingredients: {', '.join(ingredients)}.\n"
         "Keep the instructions very simple, use short steps, and no rare ingredients."
     )
-    if vegetarian:
-        prompt += "\nOnly suggest recipes that are vegetarian (no meat, poultry, or fish)."
-
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.6
     )
-    print(prompt)
     return response.choices[0].message.content
 
 if __name__ == '__main__':

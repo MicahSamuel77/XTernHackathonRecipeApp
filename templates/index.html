@@ -1,43 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <title>👵 HoosierHelper – Your Kitchen Friend</title>
     <link rel="stylesheet" href="/static/styles.css" />
-    <style>
-        /* Vegetarian Checkbox Modern, Large, and Elder-Friendly */
-        .veg-checkbox-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .veg-checkbox-row label {
-            font-size: 1.4em;
-            font-weight: 600;
-            background: #eaf4e8;
-            padding: 12px 30px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 1px 10px rgba(85, 120, 65, 0.07);
-            border: 2px solid #d4e2d4;
-            gap: 14px;
-        }
-
-        .veg-checkbox-row input[type="checkbox"] {
-            width: 28px;
-            height: 28px;
-            accent-color: #4caf50;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-    </style>
 </head>
-
 <body>
     <div class="grid-container">
         <header>
@@ -55,14 +22,6 @@
         </nav>
 
         <main>
-            <!-- Vegetarian Checkbox on top, big and centered -->
-            <div class="veg-checkbox-row">
-                <label for="vegetarian">
-                    <input type="checkbox" id="vegetarian" name="vegetarian" />
-                    <span>Vegetarian (meat-free)</span>
-                </label>
-            </div>
-
             <p><strong>Step 1:</strong> Choose 1 or more photos of food ingredients or type your ingredients below.</p>
             <p><strong>Step 2:</strong> Press "Generate Recipe" and we'll help you cook!</p>
 
@@ -71,8 +30,7 @@
                 <br />
 
                 <label for="manual_ingredients">Or type ingredients here (comma separated):</label><br />
-                <textarea id="manual_ingredients" name="manual_ingredients" rows="3"
-                    placeholder="e.g., chicken, tomatoes, garlic"></textarea>
+                <textarea id="manual_ingredients" name="manual_ingredients" rows="3" placeholder="e.g., chicken, tomatoes, garlic"></textarea>
                 <br />
 
                 <button type="submit">Generate Recipe</button>
@@ -182,8 +140,9 @@
                     speak("Sorry, we could not detect any ingredients. Please try again.");
                     updateControlsVisibility(false);
                 } else {
-                    const formattedOutput =
-                        `📝 Ingredients Detected:
+                    // Format output nicely with preserved line breaks inside <pre>
+                    const formattedOutput = 
+`📝 Ingredients Detected:
 ${data.ingredients.join(", ")}
 
 👩‍🍳 Your Simple Recipe:
@@ -234,5 +193,4 @@ ${data.recipe}`;
         };
     </script>
 </body>
-
 </html>
