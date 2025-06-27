@@ -49,7 +49,7 @@ HoosierHelper is an intelligent cooking companion that transforms your available
 1. Clone the repository using the following link:  
    https://github.com/MicahSamuel77/XTernHackathonRecipeApp
 
-2. Configure your OpenAI API key in `main.py`:
+2. Configure your OpenAI API key at the TOP of `main.py`:
    
    ```python
    client = OpenAI(
